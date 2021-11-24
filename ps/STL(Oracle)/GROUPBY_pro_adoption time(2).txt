@@ -1,0 +1,10 @@
+1 SELECT R.lv, NVL(E.cnt,0) 
+2    FROM
+3        (SELECT TO_CHAR(DATETIME,'HH24') as HOUR ,COUNT(*) cnt 
+4            FROM ANIMAL_OUTS GROUP BY TO_CHAR(DATETIME,'HH24')
+5                ORDER BY HOUR)E, 
+6        (SELECT (LEVEL-1)lv FROM dual CONNECT BY LEVEL <=24)R
+7 WHERE R.lv = E.HOUR(+) ORDER BY R.lv
+
+6번째 줄의 SELECT 절을 주의해서 보자. 
+
