@@ -1,0 +1,12 @@
+1. SELECT Name||'('||SUBSTR(Occupation, 1, 1)||')'
+2. FROM OCCUPATIONS
+3. ORDER BY Name;
+4. SELECT ('There are a total of '||COUNT(Occupation)||' '||lower(Occupation)||'s.')
+5. FROM OCCUPATIONS
+6. GROUP BY Occupation
+7. ORDER BY COUNT(Occupation), Occupation;
+
+SELECT 절에 나오는 모든 COLUMN들이 GROUP BY 절에 선언되어야 한다. 사실 이건 내가 4번째 줄에 NAME을 잘못 적어서 그런거긴 한데..
+ORACLE에서 단어끼리 연결하는 연산자는 ||이다. CONCAT은 ORACLE에서는 인자를 2개밖에 쓸 수 없어서 이 문제를 풀기 위해서는 중첩 CONCAT을 
+사용해야한다. 예를 들어 1번째 줄을 CONCAT을 사용한다면 CONCAT(Name, CONCAT('(', CONCAT(SUBSTR(Occupation, 1, 1), ')')))이므로 보기에 
+깔끔하지 않아 위의 방법을 선택했다. 
