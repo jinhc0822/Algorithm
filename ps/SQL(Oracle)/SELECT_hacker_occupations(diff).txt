@@ -1,0 +1,16 @@
+1. SELECT MIN(DECODE(OCCUPATION, 'Doctor', NAME))    Doctor
+2.      , MIN(DECODE(OCCUPATION, 'Professor', NAME)) Professor
+3.      , MIN(DECODE(OCCUPATION, 'Singer', NAME))    Singer
+4.      , MIN(DECODE(OCCUPATION, 'Actor', NAME))     Actor
+5.   FROM (
+6.         SELECT OCCUPATION, NAME
+7.              , ROW_NUMBER() OVER(PARTITION BY OCCUPATION ORDER BY NAME) RN
+8.           FROM OCCUPATIONS
+9.        )
+10.  GROUP BY RN
+11.  ORDER BY 1, 2, 3, 4;
+
+어떻게 건드려야할지 엄두도 나지 않는 문제였다. 일단 FROM 절에서 ROW_NUMBER를 이용해 행번호를 얻은다음에 GROUP BY로 묶어서 행을 만드는 것까지는 이해했다. 
+MIN을 쓰는 이유는 NULL 말고 값이 존재하는 것부터 먼저 나오도록 하기 위해서 라고 하는데 자세히 이해는 하지 못했다.
+MIN을 뺐을 때 GROUP BY 오류가 나는 것을 보아하니 OCCUPATION이 GROUP BY 절에 들어가 있지 않아 생긴 문제 같은데 그걸 무마하기 위해서도 MIN을 넣은건가?..
+PIVOT 함수를 사용할 수도 있다고 하는데 아직 PIVOT 함수를 배운 적이 없어서 일단 패스하도록..
