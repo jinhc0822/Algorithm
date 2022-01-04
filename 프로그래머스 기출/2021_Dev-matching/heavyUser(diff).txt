@@ -1,0 +1,12 @@
+1. SELECT *
+2. FROM PLACES PL1 
+3. WHERE EXISTS (
+4.                 SELECT 1
+5.                 FROM PLACES PL2
+6.                 WHERE PL1.HOST_ID = PL2.HOST_ID
+7.                 GROUP BY HOST_ID
+8.                 HAVING COUNT(*) > 1
+9.              )
+10. ORDER BY ID;
+
+조금 오랜만에 했더니 감을 다 잃었네;; 그렇게 어려운 문제는 아닌데.. 다시 공부를 해야하나..
