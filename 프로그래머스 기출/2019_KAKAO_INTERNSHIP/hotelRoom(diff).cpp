@@ -1,11 +1,11 @@
-ï»¿#include <vector>
+#include <vector>
 #include <map>
 using namespace std;
 
 /*2022.02.21
-union findê¹Œì§€ ìƒê°í•´ëƒˆê³  í’€ì´ ë°©ì‹ì— ëŒ€í•´ì„œë„ ìƒê°í•´ëƒˆëŠ”ë°
-ì™œ ëª» í’€ì—ˆì„ê¹Œ... ê·¼ë° ê³„ì† íš¨ìœ¨ì„± í‹€ë¦¬ê¸¸ëž˜ ë‹¤ë¥¸ í’€ì´ë“¤ì„ ë´¤ëŠ”ë°
-ë‚´ê±°ëž‘ ë˜‘ê°™ì€ë°????*/
+union find±îÁö »ý°¢ÇØ³Â°í Ç®ÀÌ ¹æ½Ä¿¡ ´ëÇØ¼­µµ »ý°¢ÇØ³Â´Âµ¥
+¿Ö ¸ø Ç®¾úÀ»±î... ±Ùµ¥ °è¼Ó È¿À²¼º Æ²¸®±æ·¡ ´Ù¸¥ Ç®ÀÌµéÀ» ºÃ´Âµ¥ ³»°Å¶û ¶È°°Àºµ¥????
+ÀÌ°Å ÁøÂ¥ ¿Ö Åë°ú ¾ÈµÊ?... ´Ù¸¥ »ç¶÷ Ç®ÀÌ¶û ´Ù¸¦°Ô ¾ø´Âµ¥;;*/
 
 map<long long, long long> r;
 
