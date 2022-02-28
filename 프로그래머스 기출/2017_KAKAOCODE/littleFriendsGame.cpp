@@ -4,7 +4,11 @@
 #include <cstring>
 using namespace std;
 
-/*2022.02.24*/
+/*2022.02.24
+구상까지는 쉬웠는데 함정이 조금 있었네.. 알파벳 순서를 맞추기 위해서 매칭되는 카드를 찾았을 경우
+break를 해서 다시 알파벳 처음으로 돌아가야한다는 것과 visit을 3차원 배열로 해야한다는 점을
+처음에는 생각을 못했다.*/
+
 
 struct Info {
 	int y;
@@ -12,7 +16,7 @@ struct Info {
 	int dir;
 	bool corner;
 };
-bool visit[100][100];
+bool visit[4][100][100];
 int dy[4] = { -1, 1, 0, 0 };
 int dx[4] = { 0, 0, -1, 1 };
 int N, M;
@@ -21,7 +25,7 @@ bool bfs(int y, int x, vector<string>& board) {
 	memset(visit, false, sizeof(visit));
 	queue<Info> q;
 	q.push({ y, x, -1, true });
-	visit[y][x] = true;
+	visit[0][y][x] = visit[1][y][x] = visit[2][y][x] = visit[3][y][x] = true;
 	while (!q.empty()) {
 		Info cur = q.front();
 		q.pop();
@@ -34,11 +38,11 @@ bool bfs(int y, int x, vector<string>& board) {
 			int ny = cur.y + dy[i];
 			int nx = cur.x + dx[i];
 			if (ny < 0 || nx < 0 || ny >= N || nx >= M) continue;
-			if (visit[ny][nx] || (board[ny][nx] != '.' && board[ny][nx] != board[y][x])) continue;
+			if (visit[i][ny][nx] || (board[ny][nx] != '.' && board[ny][nx] != board[y][x])) continue;
 			if (!cur.corner && i != cur.dir) continue;
-			visit[ny][nx] = true;
+			visit[i][ny][nx] = true;
 			if (cur.dir == -1 || i == cur.dir)
-				q.push({ ny, nx, i, true });
+				q.push({ ny, nx, i, cur.corner });
 			else if (i != cur.dir)
 				q.push({ ny, nx, i, false });
 		}
@@ -69,6 +73,7 @@ string solution(int m, int n, vector<string> board) {
 				chk = true;
 				cnt++;
 				alphabet[i] = false;
+				break;
 			}
 		}
 		if (!chk)
