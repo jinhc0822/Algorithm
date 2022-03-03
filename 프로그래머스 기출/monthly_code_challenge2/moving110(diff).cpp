@@ -1,36 +1,41 @@
-ï»¿#include <string>
+#include <string>
 #include <vector>
-#include <algorithm>
 using namespace std;
 
 /*2022.03.03
-ë‚˜ì¤‘ì— ê²°ê³¼ë¬¼ì„ ì¡°í•©í•˜ëŠ” ê²Œ ì‹œê°„ì´ˆê³¼ ì›ì¸ì¸ì¤„ ì•Œì•˜ëŠ”ë° ë¬¸ìžì—´ì—ì„œ 110ì„ ì œê±°í•˜ëŠ”ê²Œ
-ì›ì¸ì´ì—ˆë‹¤.*/
+³ªÁß¿¡ °á°ú¹°À» Á¶ÇÕÇÏ´Â °Ô ½Ã°£ÃÊ°ú ¿øÀÎÀÎÁÙ ¾Ë¾Ò´Âµ¥ ¹®ÀÚ¿­¿¡¼­ 110À» Á¦°ÅÇÏ´Â°Ô
+¿øÀÎÀÌ¾ú´Ù. ½ºÅÃÀÌ ¶°¿Ã¶ó¼­ ½ºÅÃÀ¸·Î Ç°.. ±Ùµ¥ ¾Ë°íº¸´Ï °á°ú¹° Á¶ÇÕµµ ½Ã°£ÃÊ°ú¿´À½¤»¤»
+ÈÞ.. ÀÏ´Ü ¹®ÀÚ¿­¿¡¼­ 110À» ÀüºÎ Áö¿ì°í ³²Àº ¹®ÀÚ¿­¿¡¼­ Æ¯Á¤ ¹®ÀÚ°¡ ÀÖÀ» °æ¿ì¿¡ °Å±â¿¡ »ðÀÔÇÑ´Ù¶ó´Â
+¹ß»ó ÀÚÃ¼´Â ¸Â¾Ò´Âµ¥ Áö¿ì´Â µ¥¿¡ ½ºÅÃÀ» ÀÌ¿ëÇÏ´Â °Í°ú Æ¯Á¤ Á¶°ÇÀ» »ý°¢ÇÏ´Â °Å¿¡¼­ ½Ã°£À» ¸¹ÀÌ ½è´Ù.
+110À» Áö¿ì´Â °Ô °ýÈ£ Áö¿ì±â¶û ¸Å¿ì ºñ½ÁÇØ¼­ °Å±â¼­ ¹Ù·Î ½ºÅÃÀÎ °ÍÀ» ´«Ä¡Ã«¾î¾ßÇÏ´Âµ¥..*/
 
 vector<string> solution(vector<string> s) {
 	vector<string> answer;
 	for (int i = 0; i < s.size(); i++) {
-		int cnt = 0;
-		while (true) {
-			if (s[i].find("110") != string::npos) {
-				int idx = s[i].find("110");
-				cnt++;
-				s[i] = s[i].substr(0, idx) + s[i].substr(idx + 3);
+		int cnt = 0, top2 = -2, top = -1;
+		vector<char> stack(1000000);
+		for (int j = 0; j < s[i].size(); j++) {
+			if (top2 < 0 || top < 0) {
+				stack[++top] = s[i][j];
+				top2++;
 			}
-			else break;
+			else if (stack[top2] == '1' && stack[top] == '1' && s[i][j] == '0') {
+				top2 -= 2;
+				top -= 2;
+				cnt++;
+			}
+			else {
+				stack[++top] = s[i][j];
+				top2++;
+			}
 		}
-		vector<string> tmp;
-		string k = "";
-		for (int i = 0; i < cnt; i++)
+		s[i].clear();
+		for (int j = 0; j <= top; j++)
+			s[i] += stack[j];
+		string k = "", res;
+		for (int j = 0; j < cnt; j++)
 			k += "110";
-		for (int j = 0; j <= s[i].size(); j++) {
-			string a = s[i].substr(0, j) + k;
-			if (j < s[i].size()) a += s[i].substr(j);
-			tmp.push_back(a);
-		}
-		sort(tmp.begin(), tmp.end());
-		answer.push_back(tmp[0]);
-		/*if (s[i].find("11") != string::npos) {
+		if (s[i].find("11") != string::npos) {
 			int idx = s[i].find("11");
 			res = s[i].substr(0, idx) + k + s[i].substr(idx);
 		}
@@ -44,7 +49,7 @@ vector<string> solution(vector<string> s) {
 			else
 				res = k + s[i];
 		}
-		answer.push_back(res);*/
+		answer.push_back(res);
 	}
 	return answer;
 }
