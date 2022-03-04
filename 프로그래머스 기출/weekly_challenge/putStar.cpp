@@ -1,12 +1,12 @@
-#include <string>
+ï»¿#include <string>
 #include <vector>
 #include <cmath>
 #include <climits>
 using namespace std;
 
 /*2022.03.02
-¾Æ´Ï Ç®ÀÌ¹æ¹ıÀº ¼ÖÁ÷È÷ Á¤ÇØÁ® ÀÖ´Âµ¥ ¹º°¡ ÀÚ·áÇü¿¡¼­ Æ²¸° °Í °°Àºµ¥...
-Á¶±İ ½ÄÀ» ´Ù¸£°Ô ÇØ¾ß°Ú´Ù..*/
+ì•„ë‹ˆ í’€ì´ë°©ë²•ì€ ì†”ì§íˆ ì •í•´ì ¸ ìˆëŠ”ë° ë­”ê°€ ìë£Œí˜•ì—ì„œ í‹€ë¦° ê²ƒ ê°™ì€ë°...
+ì¡°ê¸ˆ ì‹ì„ ë‹¤ë¥´ê²Œ í•´ì•¼ê² ë‹¤.. ì´ëŸ° ìˆ˜í•™ ë¬¸ì œì—ì„œëŠ” ê°€ëŠ¥í•˜ë©´ ë‚˜ëˆ„ê¸°ë¥¼ ì•ˆ ì“°ëŠ”ê²Œ ì¢‹ë‹¤..*/
 
 bool v[1001][1001];
 
@@ -17,21 +17,18 @@ vector<string> solution(vector<vector<int>> line) {
 	long long maxY = LLONG_MIN, maxX = LLONG_MIN;
 	for (int i = 0; i < line.size() - 1; i++) {
 		for (int j = i + 1; j < line.size(); j++) {
-			double A = line[i][0], B = line[i][1], C = line[i][2];
-			double a = line[j][0], b = line[j][1], c = line[j][2];
-			long long n = B * c - C * b;
-			long long m = A * b - B * a;
-			if (m != 0 && n % m == 0) {
-				double x = n / m;
-				double y = -(A * x / B) - (C / B);
-				if (y != round(y))
-					continue;
-				if (y < minY) minY = y;
-				if (y > maxY) maxY = y;
-				if (x < minX) minX = x;
-				if (x > maxX) maxX = x;
-				stars.push_back(make_pair(x, y));
-			}
+			long long m = (long long)line[i][0] * line[j][1] - (long long)line[i][1] * line[j][0];
+			if (m == 0) continue;
+			long long n = (long long)line[i][1] * line[j][2] - (long long)line[i][2] * line[j][1];
+			long long p = (long long)line[i][2] * line[j][0] - (long long)line[i][0] * line[j][2];
+			if ((n % m != 0) || (p % m != 0)) continue;
+			n /= m;
+			p /= m;
+			stars.push_back({ n, p });
+			if (n > maxX) maxX = n;
+			if (n < minX) minX = n;
+			if (p > maxY) maxY = p;
+			if (p < minY) minY = p;
 		}
 	}
 	for (int i = 0; i < stars.size(); i++) {
@@ -48,7 +45,4 @@ vector<string> solution(vector<vector<int>> line) {
 		answer.push_back(s);
 	}
 	return answer;
-}
-int main() {
-	solution({ {2, -1, 4}, {-2, -1, 4}, {0, -1, 1}, {5, -8, -12}, {5, 8, 12} });
 }
