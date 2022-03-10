@@ -39,6 +39,7 @@ vector<pii> bfs(vector<vector<int>>& input, int x, int y, int target) {
 	}
 	return res;
 }
+// 퍼즐 조각 이 (0, 0)을 기준으로 나타나게 변환
 vector<vector<pii>> convert(vector<vector<pii>>& before, int value) {
 	vector<vector<pii>> after;
 	for (auto k : before) {
@@ -73,7 +74,7 @@ int solution(vector<vector<int>> game_board, vector<vector<int>> table) {
 	int answer = 0;
 	int inputSize = game_board.size();
 
-	vector<vector<pii>> blanks;
+	vector<vector<pii>> blanks; // 보드판 위의 빈 공간
 	for (int i = 0; i < inputSize; i++)
 		for (int j = 0; j < inputSize; j++)
 			if (game_board[i][j] == 0 && !chk[i][j])
@@ -83,19 +84,21 @@ int solution(vector<vector<int>> game_board, vector<vector<int>> table) {
 		for (int j = 0; j < inputSize; j++)
 			chk[i][j] = false;
 
-	vector<vector<pii>> shapes;
+	vector<vector<pii>> shapes; // 퍼즐 조각
 	for (int i = 0; i < inputSize; i++)
 		for (int j = 0; j < inputSize; j++)
 			if (table[i][j] == 1 && !chk[i][j])
 				shapes.push_back(bfs(table, i, j, 1));
 
-	vector<vector<pii>> afterBlanks = convert(blanks, 100);
+	vector<vector<pii>> afterBlanks = convert(blanks, 100); // 변환 후 빈 공간
 	for (int i = 0; i < afterBlanks.size(); i++)
+		// 같은 모양이라도 순서가 다르면 다른 것으로 인식하기 때문에 정렬을 해줌.
 		sort(afterBlanks[i].begin(), afterBlanks[i].end());
 
-	vector<vector<pii>> afterShapes = convert(shapes, 100);
+	// 어차피 나중에 회전한 것까지 더해서 정렬할거라 정렬을 여기서 하지 않음.
+	vector<vector<pii>> afterShapes = convert(shapes, 100); // 변환 후 퍼즐 조각
 
-	vector<vector<vector<pii>>> finalShapes;
+	vector<vector<vector<pii>>> finalShapes; // 회전한 것까지 들어간 퍼즐 조각
 	for (auto k : afterShapes) {
 		vector<vector<pii>> afterTmp;
 		for (int i = 0; i < 4; i++) {
