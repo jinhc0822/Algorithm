@@ -1,13 +1,14 @@
-#include <vector>
+ï»¿#include <vector>
 #include <cstring>
 #include <map>
-#include <iostream>
 using namespace std;
 
 /*2022.03.10
-ÀÏ´Ü ¿¹Á¦¿¡¼­µµ ¸·Èù ºÎºĞÀÌ ÀÖ¾ú´Âµ¥ ±×°Ç ¼¼·Î³ª °¡·Î ±æÀÌ°¡ 1ÀÎ °æ¿ì¿¡ ½ÇÁ¦·Î ±æÀÌ ¾Æ´ÏÁö¸¸
-±æÀÌ¶ó°í ÆÇ´ÜÇÏ´Â °æ¿ì°¡ ÀÖ¾ú´Ù. ±×·¡¼­ °¡·Î³ª ¼¼·Î ±æÀÌ°¡ 1ÀÎ °æ¿ì¿¡¸¸ mapÀ» ÀÌ¿ëÇØ ¿¬°áÀ» ²÷¾îÁá´Ù.
-±Ùµ¥ Å×½ºÆ® ÄÉÀÌ½º 5°³¿¡¼­ ¸·Çû´Ù.*/
+ì¼ë‹¨ ì˜ˆì œì—ì„œë„ ë§‰íŒ ë¶€ë¶„ì´ ìˆì—ˆëŠ”ë° ê·¸ê±´ ì„¸ë¡œë‚˜ ê°€ë¡œ ê¸¸ì´ê°€ 1ì¸ ê²½ìš°ì— ì‹¤ì œë¡œ ê¸¸ì´ ì•„ë‹ˆì§€ë§Œ
+ê¸¸ì´ë¼ê³  íŒë‹¨í•˜ëŠ” ê²½ìš°ê°€ ìˆì—ˆë‹¤. ê·¸ë˜ì„œ ê°€ë¡œë‚˜ ì„¸ë¡œ ê¸¸ì´ê°€ 1ì¸ ê²½ìš°ì—ë§Œ mapì„ ì´ìš©í•´ ì—°ê²°ì„ ëŠì–´ì¤¬ë‹¤.
+ê·¼ë° í…ŒìŠ¤íŠ¸ ì¼€ì´ìŠ¤ 5ê°œì—ì„œ ë§‰í˜”ë‹¤. ë‹¤ë¥¸ ë„í˜• ê°„ì˜ ì‚¬ì´ì˜ ê¸¸ì´ê°€ 1ì¼ ê²½ìš° ë˜‘ê°™ì€ ë¬¸ì œê°€ ìƒê²¼ë‹¤.
+ê·¸ë˜ì„œ ë¹„íŠ¸ë§ˆìŠ¤í‚¹ì„ ì´ìš©í•˜ì—¬ ê° ë„í˜•ì˜ ì ë“¤ì„ êµ¬ë¶„í•´ì£¼ì—ˆë‹¤. 
+ë‹¤ë¥¸ í’€ì´ë¥¼ ë³´ë‹ˆ ê·¸ëƒ¥ ìŠ¤ì¼€ì¼ì„ 2ë°°ë¡œ í•´ì„œ í‘¼ ê²ƒë„ ìˆì—ˆë‹¤. ì‚¬ì‹¤ ì´ê²Œ ê°€ì¥ ê°„ë‹¨í•œ í’€ì´ê°€ ì•„ë‹ê¹Œ ì‹¶ë‹¤.*/
 
 bool visit[51][51];
 int line[51][51], answer;
@@ -26,21 +27,23 @@ void dfs(int x, int y, int dist, int targetX, int targetY) {
 		int nx = x + dx[i];
 		int ny = y + dy[i];
 		if (nx < 0 || ny < 0 || nx > 50 || ny > 50) continue;
-		if (visit[nx][ny] || line[nx][ny] != 1) continue;
+		if (visit[nx][ny] || line[nx][ny] < 1) continue;
 		if (connect[{ {x, y}, { nx, ny }}]) continue;
+		if ((line[x][y] & line[nx][ny]) == 0) continue;
 		dfs(nx, ny, dist + 1, targetX, targetY);
 	}
 }
 int solution(vector<vector<int>> rectangle, int characterX, int characterY, int itemX, int itemY) {
 	answer = 987654321;
-	memset(line, -1, sizeof(line));
+	memset(line, 0, sizeof(line));
+	int num = 0;
 	for (auto r : rectangle) {
 		int minX = r[0], minY = r[1], maxX = r[2], maxY = r[3];
 		for (int i = minX; i <= maxX; i++) {
 			for (int j = minY; j <= maxY; j++) {
-				if (line[i][j] == 0) continue;
-				if (i == minX || i == maxX || j == minY || j == maxY) line[i][j] = 1;
-				else line[i][j] = 0;
+				if (line[i][j] == -1) continue;
+				if (i == minX || i == maxX || j == minY || j == maxY) line[i][j] |= (1 << num);
+				else line[i][j] = -1;
 			}
 		}
 		if (maxX - minX == 1)
@@ -53,12 +56,8 @@ int solution(vector<vector<int>> rectangle, int characterX, int characterY, int 
 				connect[{ {i, minY}, { i, maxY }}] = true;
 				connect[{ {i, maxY}, { i, minY }}] = true;
 			}
-				
+		num++;
 	}
 	dfs(characterX, characterY, 0, itemX, itemY);
 	return answer;
-}
-
-int main() {
-	cout << solution({ {2, 3, 7, 4}, {2, 5, 7, 6}, {3, 2, 4, 7}, {5, 2, 6, 7} }, 1, 4, 6, 3);
 }
