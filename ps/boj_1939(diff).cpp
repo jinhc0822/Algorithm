@@ -6,7 +6,8 @@ using namespace std;
 /*2022.04.05
 발상을 떠올리는 것은 쉬웠다. 하지만 아직 이분탐색을 제대로 사용하지 못하는 것 같다.
 마지막에 mid를 출력하는 것으로 했더니 틀리고 left를 출력하는 것으로 하니 맞았다.
-https://www.acmicpc.net/blog/view/109 여기에 잘 정리되어 있는 것 같다. 항상 이게 좀 헷갈리더라.*/
+https://www.acmicpc.net/blog/view/109 여기에 잘 정리되어 있는 것 같다. 항상 이게 좀 헷갈리더라.
++ 근데 left와 right 사이에 하나의 정수가 들어가는지 판단하는 것이기 때문에 left값과 right값은 포함되지 않는다. 주의해서 사용.*/
 
 int n, m, s, e;
 bool visit[10001], num[10001];
