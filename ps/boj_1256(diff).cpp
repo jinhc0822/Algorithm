@@ -21,6 +21,7 @@ void bino(int a, int z) {
 }
 string getWord(int a, int z, int skip) {
 	if (a == 0) return string(z, 'z');
+	if (z == 0) return string(a, 'a');
 	if (skip < 0) {
 		cout << -1;
 		exit(0);

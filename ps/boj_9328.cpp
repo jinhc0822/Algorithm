@@ -4,7 +4,8 @@
 #include <cstring>
 using namespace std;
 
-/*2022.04.27*/
+/*2022.04.27
+오랜만에 바로 통과. 고민도 별로 안했고 처음으로 한 구상이 반례없이 통과해서 다행.*/
 
 struct Door {
 	int y;
@@ -63,6 +64,7 @@ int main() {
 	ios_base::sync_with_stdio(false);
 	cin >> t;
 	while (t--) {
+		ans = 0;
 		cin >> h >> w;
 		for (int i = 0; i < h; i++) {
 			string s; cin >> s;
@@ -72,7 +74,7 @@ int main() {
 		string k; cin >> k;
 		for (int i = 0; i < k.size(); i++) {
 			if (k == "0") break;
-			keys[k[i]] = true;
+			keys[k[i] - 'a'] = true;
 		}
 
 		for (int i = 0; i < w; i++) {
